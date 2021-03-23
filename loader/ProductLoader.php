@@ -7,13 +7,17 @@ require_once 'Db.php';
 class ProductLoader
 {
     private array $productArray = [];
+    private PDO $conn;
+
+    public function __construct(){
+        $DB = new Db();
+        $this->conn = $DB->connect();
+    }
 
     public function getProduct(int $productID): Product
     {
-        $DB = new Db();
-        $conn = $DB->connect();
 
-        $stmt = $conn->prepare("SELECT id, name, price FROM product WHERE id = :productID");
+        $stmt = $this->conn->prepare("SELECT id, name, price FROM product WHERE id = :productID");
         $stmt->bindValue('productID', $productID);
         $stmt->execute();
         $result = $stmt->fetch();
@@ -24,10 +28,8 @@ class ProductLoader
 
     public function getAllProducts(): array
     {
-        $DB = new Db();
-        $conn = $DB->connect();
 
-        $stmt = $conn->prepare("SELECT id, name, price FROM product");
+        $stmt = $this->conn->prepare("SELECT id, name, price FROM product");
         $stmt->execute();
         $results = $stmt->fetchAll();
         foreach($results as $result) {

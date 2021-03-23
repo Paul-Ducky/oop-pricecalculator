@@ -8,7 +8,7 @@
                     <option value="1">test</option>
                     <option value="2">test</option>
                     <?php foreach($products AS $product):?>
-                        <option value="<?php echo $product['productID']?>"><?php echo $product['productName'] ?></option>
+                        <option value="<?php echo $product->getProductID();?>"><?php echo $product->getProductName(); ?></option>
                     <?php endforeach;?>
                 </select>
             </div>
@@ -18,7 +18,7 @@
                     <option value="1">test</option>
                     <option value="2">test</option>
                     <?php foreach($customers AS $customer):?>
-                        <option value="<?php echo $customer['customerID']?>"><?php echo $customer['customerName'] ?></option>
+                        <option value="<?php echo $customer->getCustomerID()?>"><?php echo $customer->getFirstName() ?></option>
                     <?php endforeach;?>
                 </select>
             </div>
