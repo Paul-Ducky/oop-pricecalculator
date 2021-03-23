@@ -1,8 +1,8 @@
 <?php
 declare(strict_types=1);
 
-require_once 'Product.php';
-require_once 'Db.php';
+require_once 'model/Product.php';
+require_once 'model/Db.php';
 
 class ProductLoader
 {
@@ -36,7 +36,6 @@ class ProductLoader
             $product = new Product((int)$result['id'], $result['name'], (int)$result['price']);
             array_push($this->productArray, $product);
         }
-
         return $this->productArray;
     }
 }
