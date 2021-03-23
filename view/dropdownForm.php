@@ -18,11 +18,10 @@
                     <option value="1">test</option>
                     <option value="2">test</option>
                     <?php foreach($customers AS $customer):?>
-                        <option value="<?php echo $customer->getCustomerID()?>"><?php echo $customer->getFirstName() ?></option>
+                        <option value="<?php echo $customer->getCustomerID()?>"><?php echo $customer->getName() ?></option>
                     <?php endforeach;?>
                 </select>
             </div>
             <button type="submit" name="calculate" class="btn btn-primary" id="submit">Submit</button>
         </form>
     </div>
-<?php require 'includes/footer.php';?>
