@@ -4,12 +4,42 @@
 class CustomerGroupLoader
 {
     private PDO $conn;
+    private array $groupArray = [];
 
     public function __construct()
     {
         $DB = new Db();
         $this->conn = $DB->connect();
     }
+
+    public function getCustomerGroup($groupID): CustomerGroup
+    {
+        $stmt = $this->conn->prepare("SELECT id, name, parent_id, fixed_discount, variable_discount FROM customer_group WHERE id = :groupID");
+        $stmt->bindValue('groupID', $groupID);
+        $stmt->execute();
+        $result = $stmt->fetch();
+        $group = new CustomerGroup((int)$result['id'], $result['name'], (int)$result['parent_id'], (int)$result['fixed_discount'], (int)$result['variable_discount']);
+
+        return $group;
+    }
+
+    public function getGroupChain($customerGroup): array
+    {
+        var_dump($customerGroup->getParentID());
+        if($customerGroup->getParentID() !== null){
+            $stmt = $this->conn->prepare("SELECT id, name, parent_id, fixed_discount, variable_discount FROM customer_group WHERE id = :parentID");
+            $stmt->bindValue('parentID', $customerGroup->getParentID());
+            $stmt->execute();
+            $result = $stmt->fetch();
+            $group = new CustomerGroup((int)$result['id'], $result['name'], (int)$result['parent_id'], (int)$result['fixed_discount'], (int)$result['variable_discount']);
+            $this->groupArray[] = $group;
+            $this->getGroupChain($group->getParentID());
+        }
+        var_dump($this->groupArray);
+        return $this->groupArray;
+    }
+
+}
 
 //   public function getCustomerGroupDiscounts($customerGroupID)
 //   {
@@ -30,4 +60,3 @@ class CustomerGroupLoader
  //               }
  //           }
   //         return $calcArray[$fixdisc,$vardisc];
-}
