@@ -18,27 +18,26 @@ class CustomerGroupLoader
         $stmt->bindValue('groupID', $groupID);
         $stmt->execute();
         $result = $stmt->fetch();
-        $group = new CustomerGroup((int)$result['id'], $result['name'], (int)$result['parent_id'], (int)$result['fixed_discount'], (int)$result['variable_discount']);
+        $group = new CustomerGroup((int)$result['id'], $result['name'], $result['parent_id'], (int)$result['fixed_discount'], (int)$result['variable_discount']);
 
         return $group;
     }
 
-    public function getGroupChain($customerGroup): array
+    public function getGroupChain(CustomerGroup $customerGroup): array
     {
-        var_dump($customerGroup->getParentID());
+
         if($customerGroup->getParentID() !== null){
             $stmt = $this->conn->prepare("SELECT id, name, parent_id, fixed_discount, variable_discount FROM customer_group WHERE id = :parentID");
             $stmt->bindValue('parentID', $customerGroup->getParentID());
             $stmt->execute();
             $result = $stmt->fetch();
-            $group = new CustomerGroup((int)$result['id'], $result['name'], (int)$result['parent_id'], (int)$result['fixed_discount'], (int)$result['variable_discount']);
+            $group = new CustomerGroup((int)$result['id'], $result['name'], $result['parent_id'], (int)$result['fixed_discount'], (int)$result['variable_discount']);
             $this->groupArray[] = $group;
-            $this->getGroupChain($group->getParentID());
+            $this->getGroupChain($group);
         }
-        var_dump($this->groupArray);
+
         return $this->groupArray;
     }
-
 }
 
 //   public function getCustomerGroupDiscounts($customerGroupID)
