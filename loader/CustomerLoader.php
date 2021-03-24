@@ -3,7 +3,9 @@
 
 class CustomerLoader
 {
+
     private PDO $conn;
+    private array $customerArray;
 
     public function __construct(){
         $DB = new Db();
@@ -11,19 +13,27 @@ class CustomerLoader
     }
 
     public function getCustomer($customerID){
-//@todo nakijken met customer class.
-        $stmt = $this->conn->prepare("SELECT id, concat_ws(' ',firstName, lastName )AS name, group_id, variable_discount, fixed_discount as name from customer
+
+        $stmt = $this->conn->prepare("SELECT id, firstName, lastName , group_id, variable_discount, fixed_discount from customer
                                             WHERE id = :ID;");
         $stmt->bindValue('ID', $customerID);
         $stmt->execute();
         $result = $stmt->fetch();
-        $product = new Customer((int)$result['id'], $result['name'], (int)$result['variable_discount'], );
-
-        return $product;
+        return new Customer($result['firstName'],$result['lastName'], $result['group_id'],(int)$result['id'] ,(int)$result['variable_discount'], (int)$result['fixed_discount']);
     }
-//@todo functie afwerken.
-    public function getAllCustomers(){
 
+    public function getAllCustomers(): ?array
+    {
+        {
+            $stmt = $this->conn->prepare("SELECT id, firstName, lastName , group_id, variable_discount, fixed_discount from customer");
+            $stmt->execute();
+            $results = $stmt->fetchAll();
+            foreach($results as $result) {
+                $customer = new Customer($result['firstName'],$result['lastName'], $result['group_id'],(int)$result['id'] ,(int)$result['variable_discount'], (int)$result['fixed_discount']);
+                $this->customerArray[] = $customer;
+            }
+            return $this->customerArray;
+        }
     }
 
 }
