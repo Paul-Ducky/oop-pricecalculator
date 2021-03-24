@@ -22,10 +22,10 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
-                        <a class="nav-link px-4" href="#">Placeholder</a>
+                        <a class="nav-link px-4" href="#">Register!</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link px-4" href="#">Placeholder</a>
+                        <a class="nav-link px-4" href="/view/loginForm.php">Log in!</a>
                     </li>
                 </ul>
             </div>
