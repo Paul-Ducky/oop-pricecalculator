@@ -5,7 +5,7 @@ class Product
 {
     private int $productID;
     private string $productName;
-    private int $productPrice;
+    private float $productPrice;
 
     public function __construct($productID, $productName, $productPrice)
     {
@@ -34,7 +34,7 @@ class Product
         $this->productName = $productName;
     }
 
-    public function getProductPrice(): int
+    public function getProductPrice(): float
     {
         return $this->productPrice;
     }

@@ -12,6 +12,6 @@ require 'loader/ProductLoader.php';
 
 require 'controller/controller.php';
 
-//@todo mogelijks meer controllers?
+
 $controller=new controller();
 $controller->render($_GET,$_POST);

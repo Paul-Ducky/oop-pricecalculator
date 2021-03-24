@@ -21,7 +21,7 @@ class ProductLoader
         $stmt->bindValue('productID', $productID);
         $stmt->execute();
         $result = $stmt->fetch();
-        $product = new Product ((int)$result['id'], $result['name'], (int)$result['price']);
+        $product = new Product ((int)$result['id'], $result['name'], (float)$result['price']);
 
         return $product;
     }
@@ -33,7 +33,7 @@ class ProductLoader
         $stmt->execute();
         $results = $stmt->fetchAll();
         foreach($results as $result) {
-            $product = new Product((int)$result['id'], $result['name'], (int)$result['price']);
+            $product = new Product((int)$result['id'], $result['name'], (float)$result['price']);
             array_push($this->productArray, $product);
         }
         return $this->productArray;

@@ -3,8 +3,9 @@
 
 class Db
 {
+
     private const HOST = "localhost";
-    private string $user = "";
+    private string $user = "root";
     private string $pwd = "";
     private string $dbName = "oop_calc";
 
@@ -15,4 +16,5 @@ class Db
         $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
         return $pdo;
     }
+
 }
