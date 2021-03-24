@@ -11,6 +11,10 @@ class controller
             $products = $pl->getAllProducts();
             require 'view/dropdownForm.php';
 
+            $cgl = new CustomerGroupLoader();
+            $group = $cgl->getCustomerGroup(19);
+            $groupchain = $cgl->getGroupChain($group);
+
 
             if(isset($_POST['calculate']))
             {
