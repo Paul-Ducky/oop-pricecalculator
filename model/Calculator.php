@@ -25,12 +25,12 @@ class Calculator
 
     function bestGroupDisc(array $calcArray, float $productPrice): bool
     {
-
+        $truePrice = $productPrice / self::PENNY_CORRECTOR;
         $groupVarDisc = (($productPrice / self::PENNY_CORRECTOR) * ((float)$calcArray['varDisc'] / self::PENNY_CORRECTOR));//used penny_corrector because percentile also uses 100.
         $groupFixDisc =  $calcArray['fixDisc'];
         // kijken welke een groter korting geeft. dan die korting aanhouden bij verdere berekening.
 
-        if ((($productPrice / self::PENNY_CORRECTOR) - $groupFixDisc) === ($productPrice/self::PENNY_CORRECTOR))
+        if (($truePrice - $groupFixDisc) === $truePrice)
         {
             return false;
         }
@@ -48,6 +48,7 @@ class Calculator
     function doTheMaths(customer $customer, bool $bool, array $calcArray, $productPrice)
     {
         $truePrice = $productPrice / self::PENNY_CORRECTOR;
+        $priceToPay = 0;
 
         if ($bool && ($customer->getVarDisc() !== 0))  // in case both customer and group have varDisc! --> onmogelijk negatief
         {
@@ -60,28 +61,23 @@ class Calculator
             // fixed bij de klant meetellen.
             $discount = $customer->getFixedDisc() + $calcArray['fixDisc'];
             $priceToPay = $truePrice - $discount;
-            if($priceToPay<0)
-            {
-                $priceToPay = 0;
-            }
+
         }
         if (!$bool && ($customer->getVarDisc() !== 0)) { // kans op negatief
             // eerste fixed van groep en dan percentage van klant  // 100 //  fix =5 // var 10%
             $varDiscount = ($truePrice - $calcArray['fixDisc']) * ($customer->getVarDisc() / self::PENNY_CORRECTOR);
             $priceToPay = $truePrice - $varDiscount - $calcArray['fixDisc'];
-            if($priceToPay<0)
-            {
-                $priceToPay = 0;
-            }
+
         }
         if ($bool && ($customer->getVarDisc() === 0)) { // kans op negatief
             // eerste fixed van klant en dan percentage van groep  // 100 //  fix =5 // var 10%
             $varDiscount = ($truePrice - $customer->getFixedDisc()) * ($calcArray['varDisc'] / self::PENNY_CORRECTOR);
             $priceToPay = $truePrice - $varDiscount - $customer->getFixedDisc();
-            if($priceToPay<0)
-            {
-             $priceToPay = 0;
-            }
+
+        }
+        if($priceToPay<0)
+        {
+            $priceToPay = 0;
         }
         return $priceToPay;
     }
