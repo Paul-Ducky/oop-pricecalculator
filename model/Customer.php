@@ -3,15 +3,14 @@
 
 class Customer
 {
-
+    private int $ID;
     private string $fName;
     private string $lName;
-    private int $ID;
     private int $groupID;
-    private int $varDisc;
     private int $fixedDisc;
+    private int $varDisc;
 
-    public function __construct(string $fName, string $lName, int $ID, int $groupID, int $varDisc, int $fixedDisc)
+    public function __construct(int $ID, string $fName, string $lName, int $groupID, int $fixedDisc, int $varDisc)
     {
         $this->fName     = $fName;
         $this->lName     = $lName;

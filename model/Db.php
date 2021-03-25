@@ -5,8 +5,8 @@ class Db
 {
 
     private const HOST = "localhost";
-    private string $user = "root";
-    private string $pwd = "";
+    private string $user = "becode";
+    private string $pwd = "BeCode123#";
     private string $dbName = "oop_calc";
 
     public function connect() : PDO

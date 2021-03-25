@@ -14,22 +14,22 @@ class CustomerLoader
 
     public function getCustomer($customerID){
 
-        $stmt = $this->conn->prepare("SELECT id, firstName, lastName , group_id, variable_discount, fixed_discount from customer
+        $stmt = $this->conn->prepare("SELECT id, firstName, lastName , group_id, fixed_discount, variable_discount from customer
                                             WHERE id = :ID;");
         $stmt->bindValue('ID', $customerID);
         $stmt->execute();
         $result = $stmt->fetch();
-        return new Customer($result['firstName'],$result['lastName'], $result['group_id'],(int)$result['id'] ,(int)$result['variable_discount'], (int)$result['fixed_discount']);
+        return new Customer((int)$result['id'],$result['firstName'],$result['lastName'],$result['group_id'],(int)$result['fixed_discount'],(int)$result['variable_discount']);
     }
 
     public function getAllCustomers(): ?array
     {
         {
-            $stmt = $this->conn->prepare("SELECT id, firstName, lastName , group_id, variable_discount, fixed_discount from customer");
+            $stmt = $this->conn->prepare("SELECT id, firstName, lastName , group_id, fixed_discount, variable_discount from customer");
             $stmt->execute();
             $results = $stmt->fetchAll();
             foreach($results as $result) {
-                $customer = new Customer($result['firstName'],$result['lastName'], $result['group_id'],(int)$result['id'] ,(int)$result['variable_discount'], (int)$result['fixed_discount']);
+                $customer = new Customer((int)$result['id'],$result['firstName'],$result['lastName'],$result['group_id'],(int)$result['fixed_discount'],(int)$result['variable_discount']);
                 $this->customerArray[] = $customer;
             }
             return $this->customerArray;
