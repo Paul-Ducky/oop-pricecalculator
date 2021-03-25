@@ -32,6 +32,7 @@ class controller
         $cgl = new CustomerGroupLoader();
         $group = $cgl->getCustomerGroup($customer->getGroupID());
         $groupChain = $cgl->getGroupChain($group);
+        array_unshift($groupChain, $group);
         return ['groupChain' => $groupChain, 'productPrice' => $productPrice, 'customer' => $customer];
     }
 

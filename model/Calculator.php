@@ -34,15 +34,15 @@ class Calculator
         $groupFixDisc = $calcArray['fixDisc'];
         // kijken welke een groter korting geeft. dan die korting aanhouden bij verdere berekening.
 
-        if (($truePrice - $groupFixDisc) === $truePrice) {
-            return false;
-        }
         if ($groupVarDisc > $groupFixDisc) {
             return true;
         }
         if ($groupVarDisc < $groupFixDisc) {
             return false;
         }
+        if (($truePrice - $groupFixDisc) === $truePrice) {
+        return false;
+    }
         return false;
     }
 
