@@ -9,16 +9,27 @@ class controller
             $pl = new ProductLoader();
             $customers = $cl->getAllCustomers();
             $products = $pl->getAllProducts();
-            require 'view/dropdownForm.php';
+            require 'view/loginForm.php';
 
-
+            if(isset($_POST['login']))
+            {
+                $username = $_POST['username'];
+                $password = $_POST['password'];
+                $customer = $cl->getCustomerFromUsername($username);
+                if($customer->getUsername() === $username && $customer->getPassword() === $password) {
+                    $msg = "Welcome, " . $customer->getFName() . " " . $customer->getLName();
+                    require 'view/login.php';
+                }else{
+                    $msg = "Username or password incorrect, please try again";
+                }
+            }
 
 
             if(isset($_POST['calculate']))
             {
                 $product = $pl->getProduct((int)$_POST['productID']);
                 $productPrice = $product->getProductPrice();
-                $customer = $cl->getCustomer($_POST['customerID']);
+                //$customer = $cl->getCustomer($_POST['customerID']);
                 $cgl = new CustomerGroupLoader();
                 $group = $cgl->getCustomerGroup($customer->getGroupID());
                 $groupChain = $cgl->getGroupChain($group);

@@ -10,8 +10,10 @@ class Customer
     private ?int $groupID;
     private ?int $varDisc;
     private ?int $fixedDisc;
+    private string $username;
+    private string $password;
 
-    public function __construct(string $fName, string $lName, int $ID, ?int $groupID, ?int $varDisc, ?int $fixedDisc)
+    public function __construct(string $fName, string $lName, int $ID, ?int $groupID, ?int $varDisc, ?int $fixedDisc, string $username, string $password)
     {
         $this->fName     = $fName;
         $this->lName     = $lName;
@@ -19,6 +21,8 @@ class Customer
         $this->groupID   = $groupID;
         $this->varDisc   = $varDisc;
         $this->fixedDisc = $fixedDisc;
+        $this->username = $username;
+        $this->password = $password;
     }
 
     public function getFName(): string
@@ -54,5 +58,17 @@ class Customer
     {
         return $this->fixedDisc;
     }
+
+    public function getUsername(): string
+    {
+        return $this->username;
+    }
+
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+
 
 }
