@@ -17,45 +17,46 @@ class Calculator
             }
         }
         $calcArray = [
-            'varDisc' => $maxVarDisc,   //58 -> percentage
-            'fixDisc' => $sumFixDisc    //1 -> plat
+            'varDisc' => $maxVarDisc,     // 30
+            'fixDisc' => $sumFixDisc      // 12
         ];
         return $calcArray;
     }
 
-    function bestGroupDisc(array $calcArray, float $productPrice): bool|string
+    function bestGroupDisc(array $calcArray, float $productPrice): bool
     {
 
         $groupVarDisc = (($productPrice / self::PENNY_CORRECTOR) * ((float)$calcArray['varDisc'] / self::PENNY_CORRECTOR));//used penny_corrector because percentile also uses 100.
-        $groupFixDisc = (($productPrice / self::PENNY_CORRECTOR) - $calcArray['fixDisc']); // kans op negatief
+        $groupFixDisc =  $calcArray['fixDisc'];
+        // kijken welke een groter korting geeft. dan die korting aanhouden bij verdere berekening.
 
-        if ($groupFixDisc < 0) {
-            $freemsg = 'free';
-            return $freemsg;
+        if ((($productPrice / self::PENNY_CORRECTOR) - $groupFixDisc) === ($productPrice/self::PENNY_CORRECTOR))
+        {
+            return false;
         }
-
-        if ($groupVarDisc > $groupFixDisc) {
+        if ($groupVarDisc > $groupFixDisc)
+        {
             return true;
         }
-        if ($groupVarDisc < $groupFixDisc) {
+        if ($groupVarDisc < $groupFixDisc)
+        {
             return false;
         }
         return false;
     }
 
-    function doTheMaths(customer $customer, bool|string $bool, array $calcArray, $productPrice)
+    function doTheMaths(customer $customer, bool $bool, array $calcArray, $productPrice)
     {
         $truePrice = $productPrice / self::PENNY_CORRECTOR;
 
-        if ($bool && ($customer->getVarDisc() !== null))  // in case both customer and group have varDisc! --> onmogelijk negatief
+        if ($bool && ($customer->getVarDisc() !== 0))  // in case both customer and group have varDisc! --> onmogelijk negatief
         {
             // percentage vergelijken met klant
             $bestVarDisc = max($calcArray['varDisc'], $customer->getVarDisc());
             $discount = $truePrice * ($bestVarDisc / self::PENNY_CORRECTOR);
             $priceToPay = $truePrice - $discount;
-
         }
-        if (!$bool && ($customer->getVarDisc() === null)) {  // hoge kans op negatief
+        if (!$bool && ($customer->getFixedDisc() !== 0)) {  // hoge kans op negatief
             // fixed bij de klant meetellen.
             $discount = $customer->getFixedDisc() + $calcArray['fixDisc'];
             $priceToPay = $truePrice - $discount;
@@ -64,7 +65,7 @@ class Calculator
                 $priceToPay = 0;
             }
         }
-        if (!$bool && ($customer->getVarDisc() !== null)) { // kans op negatief
+        if (!$bool && ($customer->getVarDisc() !== 0)) { // kans op negatief
             // eerste fixed van groep en dan percentage van klant  // 100 //  fix =5 // var 10%
             $varDiscount = ($truePrice - $calcArray['fixDisc']) * ($customer->getVarDisc() / self::PENNY_CORRECTOR);
             $priceToPay = $truePrice - $varDiscount - $calcArray['fixDisc'];
@@ -72,9 +73,8 @@ class Calculator
             {
                 $priceToPay = 0;
             }
-
         }
-        if ($bool && ($customer->getVarDisc() === null)) { // kans op negatief
+        if ($bool && ($customer->getVarDisc() === 0)) { // kans op negatief
             // eerste fixed van klant en dan percentage van groep  // 100 //  fix =5 // var 10%
             $varDiscount = ($truePrice - $customer->getFixedDisc()) * ($calcArray['varDisc'] / self::PENNY_CORRECTOR);
             $priceToPay = $truePrice - $varDiscount - $customer->getFixedDisc();
@@ -83,10 +83,6 @@ class Calculator
              $priceToPay = 0;
             }
         }
-        if (!is_bool($bool)) { // ingeval dat product  negatieve prijs heeft
-            $priceToPay = 0;
-        }
         return $priceToPay;
     }
 }
-
