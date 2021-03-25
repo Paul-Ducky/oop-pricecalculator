@@ -1,6 +1,6 @@
 <?php
+declare(strict_types=1);
 
-//@todo gezamelijk bekijken (ingewikkeld?)
 class CustomerGroupLoader
 {
     private PDO $conn;
@@ -18,7 +18,11 @@ class CustomerGroupLoader
         $stmt->bindValue('groupID', $groupID);
         $stmt->execute();
         $result = $stmt->fetch();
-        $group = new CustomerGroup((int)$result['id'], $result['name'], $result['parent_id'], (int)$result['fixed_discount'], (int)$result['variable_discount']);
+        $pid = null;
+        if(!is_null($result['parent_id'])){
+            $pid = (int)$result['parent_id'];
+        }
+        $group = new CustomerGroup((int)$result['id'], $result['name'], $pid, (int)$result['fixed_discount'], (int)$result['variable_discount']);
 
         return $group;
     }
@@ -31,11 +35,14 @@ class CustomerGroupLoader
             $stmt->bindValue('parentID', $customerGroup->getParentID());
             $stmt->execute();
             $result = $stmt->fetch();
-            $group = new CustomerGroup((int)$result['id'], $result['name'], $result['parent_id'], (int)$result['fixed_discount'], (int)$result['variable_discount']);
+            $pid = null;
+            if(!is_null($result['parent_id'])){
+                $pid = (int)$result['parent_id'];
+            }
+            $group = new CustomerGroup((int)$result['id'], $result['name'], $pid, (int)$result['fixed_discount'], (int)$result['variable_discount']);
             $this->groupArray[] = $group;
             $this->getGroupChain($group);
         }
-
         return $this->groupArray;
     }
 }

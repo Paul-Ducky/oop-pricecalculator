@@ -1,4 +1,4 @@
-<?php require 'includes/header.php'; ?>
+<?php declare(strict_types=1);require 'includes/header.php'; ?>
 
 <div class="container">
 

@@ -1,6 +1,6 @@
 <?php
-
-//@todo meer pages later?
+declare(strict_types=1);
+//@todo login
 class controller
 {
         public function render(array $GET, array $POST): void
@@ -16,7 +16,7 @@ class controller
 
             if(isset($_POST['calculate']))
             {
-                $product = $pl->getProduct($_POST['productID']);
+                $product = $pl->getProduct((int)$_POST['productID']);
                 $productPrice = $product->getProductPrice();
                 $customer = $cl->getCustomer($_POST['customerID']);
                 $cgl = new CustomerGroupLoader();

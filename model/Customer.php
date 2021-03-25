@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 
 class Customer
 {
@@ -7,11 +7,11 @@ class Customer
     private string $fName;
     private string $lName;
     private int $ID;
-    private int $groupID;
-    private int $varDisc;
-    private int $fixedDisc;
+    private ?int $groupID;
+    private ?int $varDisc;
+    private ?int $fixedDisc;
 
-    public function __construct(string $fName, string $lName, int $ID, int $groupID, int $varDisc, int $fixedDisc)
+    public function __construct(string $fName, string $lName, int $ID, ?int $groupID, ?int $varDisc, ?int $fixedDisc)
     {
         $this->fName     = $fName;
         $this->lName     = $lName;

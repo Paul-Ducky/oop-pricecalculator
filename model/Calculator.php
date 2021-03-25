@@ -1,6 +1,5 @@
 <?php
-
-//@todo gezamelijk bekijken (kern van project)
+declare(strict_types=1);
 class Calculator
 {
     public const PENNY_CORRECTOR = 100;
