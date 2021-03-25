@@ -43,6 +43,3 @@ class CustomerGroup
         return $this->varDisc;
     }
 }
-
-//new CustomerGroup(id17)
-  //  new CustomerGroup(parentID (4))

@@ -1,10 +1,14 @@
 <?php
 declare(strict_types=1);
+
+use JetBrains\PhpStorm\ArrayShape;
+
+
 class Calculator
 {
     public const PENNY_CORRECTOR = 100;
 
-    public function GroupDisc(array $groupChain): array
+    #[ArrayShape(['varDisc' => "int", 'fixDisc' => "int"])] public function GroupDisc(array $groupChain): array
     {
         $sumFixDisc = 0;
         $maxVarDisc = 0;
@@ -23,29 +27,26 @@ class Calculator
         return $calcArray;
     }
 
-    function bestGroupDisc(array $calcArray, float $productPrice): bool
+    public function bestGroupDisc(array $calcArray, float $productPrice): bool
     {
         $truePrice = $productPrice / self::PENNY_CORRECTOR;
         $groupVarDisc = (($productPrice / self::PENNY_CORRECTOR) * ((float)$calcArray['varDisc'] / self::PENNY_CORRECTOR));//used penny_corrector because percentile also uses 100.
-        $groupFixDisc =  $calcArray['fixDisc'];
+        $groupFixDisc = $calcArray['fixDisc'];
         // kijken welke een groter korting geeft. dan die korting aanhouden bij verdere berekening.
 
-        if (($truePrice - $groupFixDisc) === $truePrice)
-        {
+        if (($truePrice - $groupFixDisc) === $truePrice) {
             return false;
         }
-        if ($groupVarDisc > $groupFixDisc)
-        {
+        if ($groupVarDisc > $groupFixDisc) {
             return true;
         }
-        if ($groupVarDisc < $groupFixDisc)
-        {
+        if ($groupVarDisc < $groupFixDisc) {
             return false;
         }
         return false;
     }
 
-    function doTheMaths(customer $customer, bool $bool, array $calcArray, $productPrice)
+    public function doTheMaths(customer $customer, bool $bool, array $calcArray, $productPrice)
     {
         $truePrice = $productPrice / self::PENNY_CORRECTOR;
         $priceToPay = 0;
@@ -75,8 +76,7 @@ class Calculator
             $priceToPay = $truePrice - $varDiscount - $customer->getFixedDisc();
 
         }
-        if($priceToPay<0)
-        {
+        if ($priceToPay < 0) {
             $priceToPay = 0;
         }
         return $priceToPay;
