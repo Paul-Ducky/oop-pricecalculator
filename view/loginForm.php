@@ -22,6 +22,7 @@ require 'includes/header.php';
                 </div>
                 <button type="submit" name="login" class="btn-primary"> Login!</button>
             </form>
+            <h3><?php echo $msg ?></h3>
         </div>
     </div>
 
