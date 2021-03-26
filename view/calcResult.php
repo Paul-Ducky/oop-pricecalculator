@@ -1,4 +1,4 @@
-<h2>Testing</h2>
+<h2>Your Selection.</h2>
 <br>
 <br>
     <div>
@@ -8,5 +8,3 @@
     <div>
         <h3>Price to pay: <?php echo round($priceToPay,2) ?></h3>
     </div>
-
-<?php //@todo html met resultaat.
