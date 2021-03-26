@@ -30,7 +30,7 @@ class Calculator
     public function bestGroupDisc(array $calcArray, float $productPrice): bool
     {
         $truePrice = $productPrice / self::PENNY_CORRECTOR;
-        $groupVarDisc = (($productPrice / self::PENNY_CORRECTOR) * ((float)$calcArray['varDisc'] / self::PENNY_CORRECTOR));//used penny_corrector because percentile also uses 100.
+        $groupVarDisc = ($truePrice * ((float)$calcArray['varDisc'] / self::PENNY_CORRECTOR));//used penny_corrector because percentile also uses 100.
         $groupFixDisc = $calcArray['fixDisc'];
         // kijken welke een groter korting geeft. dan die korting aanhouden bij verdere berekening.
 
@@ -40,9 +40,6 @@ class Calculator
         if ($groupVarDisc < $groupFixDisc) {
             return false;
         }
-        if (($truePrice - $groupFixDisc) === $truePrice) {
-        return false;
-    }
         return false;
     }
 
@@ -70,7 +67,7 @@ class Calculator
             $priceToPay = $truePrice - $varDiscount - $calcArray['fixDisc'];
 
         }
-        if ($bool && ($customer->getVarDisc() === 0)) { // kans op negatief
+        if ($bool && ($customer->getFixedDisc() !== 0)) { // kans op negatief
             // eerste fixed van klant en dan percentage van groep  // 100 //  fix =5 // var 10%
             $varDiscount = ($truePrice - $customer->getFixedDisc()) * ($calcArray['varDisc'] / self::PENNY_CORRECTOR);
             $priceToPay = $truePrice - $varDiscount - $customer->getFixedDisc();
